@@ -1,8 +1,7 @@
 #!/usr/bin/python
-#dan and gabe r kuhl
 import cgi
 import cgitb
-cgitb.enable() 
+#cgitb.enable() 
 
 board=[]
 words={}
@@ -10,18 +9,12 @@ found=[]
 
 #Converts cgi.FieldStorage() return value into a standard dictionary
 def FStoD():
-    """
     d = {}
     formData = cgi.FieldStorage()
     for k in formData.keys():
         d[k] = formData[k].value
     return d
-    """
-    return {'11':'t','12':'b','13':'c','14':'d',
-            '21':'a','22':'i','23':'e','24':'d',
-            '31':'s','32':'e','33':'c','34':'n',
-            '41':'a','42':'b','43':'l','44':'d'}
-
+    
 #Takes the GET dictionary and turns it into a 2d list representing the board
 def getBoard():
     boar=[[],[],[],[]]
