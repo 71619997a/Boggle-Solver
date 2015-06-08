@@ -1,7 +1,10 @@
+ech
 #!/usr/bin/python
-import cgi
+print "Content-Type: text/html"
+print ""
+#import cgi
 import cgitb
-#cgitb.enable() 
+cgitb.enable() 
 
 board=[]
 words={}
@@ -9,11 +12,14 @@ found=[]
 
 #Converts cgi.FieldStorage() return value into a standard dictionary
 def FStoD():
+    '''
     d = {}
     formData = cgi.FieldStorage()
     for k in formData.keys():
         d[k] = formData[k].value
     return d
+    '''
+    return 'a'
     
 #Takes the GET dictionary and turns it into a 2d list representing the board
 def getBoard():
@@ -71,21 +77,25 @@ def recurseThroughBoard(word,used,x,y): #word is the word so far, including (x,y
 
 
 
-htmlStr = "Content-Type: text/html\n\n" #NOTE there are 2 '\n's !!! 
-htmlStr += "<html><head><title> INSERT TITLE HERE </title></head></html>\n"
+ 
+htmlStr = "<html><head><title> Boggle Solver Results </title></head></html>\n"
 htmlStr += "<body>"
 enteredCorrect=True
+print 'ajaja'
 try:
     getBoard()
 except:
     enteredCorrect=False
 if enteredCorrect:
     words=getWords()
+    '''
     for x in range(4):
         for y in range(4):
             beginRecurse(x,y)
-            print 'over'
-
+    '''
+    print 'o'
+    beginRecurse(0,0) #total takes too long
+    print 'hall'
     htmlStr += "<h3>Your board:<br></h3>"
     htmlStr += str(board)
     htmlStr += "<h3>Your words:<br></h3>"
