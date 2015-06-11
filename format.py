@@ -4,8 +4,8 @@
 #i use sets because sets are fast
 #this will make finding if a word is a word faster, bc we have to search through less
 #outputs plaintext dict. to the file formattedWords, to be used with eval
+pref = {}
 def formatWords():
-    pref = {}
     f=open('words','r')
     lst=f.readlines()
     f.close()
@@ -16,8 +16,6 @@ def formatWords():
         if word.isalpha() and word==word.lower() and len(word) >= 3:
             leng=len(word)
             first=word[0]
-            for i in range(1,leng+1):
-                prefix=word[:i]
             if leng in theDict:
                 partial=theDict[leng]
                 if first in partial: #both are present, just append to list
@@ -30,6 +28,15 @@ def formatWords():
     out.write(str(theDict))
     out.close()
 
+def prefix():
+    form = open('formattedWords', 'r')
+    largememe = form.read()
+    form.close()
+    dictio = eval(largememe)
+    for subdict in dictio:
+        for sub in dictio[subdict]:
+            for word in dictio[subdict][sub]:
+                pref[word] = word[:
+        
 formatWords()
-
-                    
+prefix()
