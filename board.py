@@ -21,5 +21,21 @@ def generate():
     board=[rolls[0:4],rolls[4:8],rolls[8:12],rolls[12:16]]
     return board
 
+def printBoard(bord):
+    html=''
+    for row in bord:
+        for lett in row:
+            html+= lett + ' '
+        html+= '<br>'
+    return html
 
-                               
+ 
+htmlStr = "<html><head><title> Random Boggle Board</title></head></html>\n"
+htmlStr += "<body>"
+htmlStr += '<h3>Your Board:</h3><br><br>'
+htmlStr += printBoard(generate())
+htmlStr += '<br>Want to<a href="board.py">Get another board?</a>'
+htmlStr += "</body></html>"
+
+
+print htmlStr

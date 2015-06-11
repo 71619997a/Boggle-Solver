@@ -30,6 +30,14 @@ def getBoard():
     #if you set somthing to a slice it will retain its value outside the function
     board[:]=boar
 
+def printBoard(bord):
+    html=''
+    for row in bord:
+        for lett in row:
+            html+= lett + ' '
+        html+= '<br>'
+    return html
+
 #gets words from the formattedWords file
 #eval is bad but it makes the program much faster & skips preprocessing
 def getWords():
@@ -90,7 +98,7 @@ if enteredCorrect:
     '''
     beginRecurse(0,0) #total takes too long
     htmlStr += "<h3>Your board:<br></h3>"
-    htmlStr += str(board)
+    htmlStr += printBoard(board)
     htmlStr += "<h3>Your words:<br></h3>"
     for i in found:
         htmlStr+=i+'<br>'
