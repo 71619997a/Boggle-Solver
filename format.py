@@ -33,9 +33,9 @@ def prefix():
     largememe = form.read()
     form.close()
     dictio = eval(largememe)
-    for subdict in dictio:
-        for sub in dictio[subdict]:
-            for word in dictio[subdict][sub]:
+    for number in dictio:
+        for letter in dictio[number]:
+            for word in dictio[number][letter]:
                 pref[word] = word[:
         
 formatWords()
