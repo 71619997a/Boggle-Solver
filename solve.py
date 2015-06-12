@@ -1,7 +1,7 @@
 #!/usr/bin/python
 print "Content-Type: text/html"
 print ""
-#import cgi
+import cgi
 import cgitb
 cgitb.enable() 
 
@@ -88,10 +88,9 @@ def recurseThroughBoard(word,used,x,y): #word is the word so far, including (x,y
             #Check if it's a word
             if isWord(newWord) and not newWord in found:
                 found.append(newWord)
-            #Check if prefix
-            elif not isPrefix(newWord):
-                return #if its not a prefix we don't care
-            recurseThroughBoard(newWord, used+[[nextPos[0],nextPos[1]]],nextPos[0],nextPos[1])
+            #Check if prefix or word (which dont count as prefs)
+            if isPrefix(newWord):
+                recurseThroughBoard(newWord, used+[[nextPos[0],nextPos[1]]],nextPos[0],nextPos[1])
         #oh god. New word is the word plus the letter on the board for next position.
         #New used is old used plus the set of coords.
         #New x and y are next pos x and y.
