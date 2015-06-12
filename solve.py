@@ -8,7 +8,7 @@ cgitb.enable()
 board=[]
 words={}
 found=[]
-
+prefs={}
 #Converts cgi.FieldStorage() return value into a standard dictionary
 def FStoD():
     d = {}
@@ -46,6 +46,12 @@ def getWords():
     f.close()
     return eval(text) #gets python-formatted dictionary from the file, completely safe usage of eval
 
+def getPrefixes():
+    pre=open('prefixes','r')
+    text=pre.read()
+    pre.close()
+    return eval(text)
+
 #gets where the neighbors are from x and y
 def getNeighborPositions(x,y):
     ls=[]
@@ -55,6 +61,14 @@ def getNeighborPositions(x,y):
             if not (anX==x and aY==y) and anX>=0 and anX<=3 and aY>=0 and aY<=3:
                 ls.append([anX,aY])
     return ls
+
+def isPrefix(pref):
+    leng=len(pref)
+    if leng>=2:
+        first=pref[0]
+        if first in prefs:
+            if leng in prefs[first]:
+                return pref in prefs[first][leng]
 
 def isWord(word):
     leng=len(word)
@@ -74,12 +88,13 @@ def recurseThroughBoard(word,used,x,y): #word is the word so far, including (x,y
             #Check if it's a word
             if isWord(newWord) and not newWord in found:
                 found.append(newWord)
+            #Check if prefix
+            elif not isPrefix(newWord):
+                return #if its not a prefix we don't care
             recurseThroughBoard(newWord, used+[[nextPos[0],nextPos[1]]],nextPos[0],nextPos[1])
         #oh god. New word is the word plus the letter on the board for next position.
         #New used is old used plus the set of coords.
         #New x and y are next pos x and y.
-
-
 
  
 htmlStr = "<html><head><title> Boggle Solver Results </title></head></html>\n"
@@ -90,13 +105,11 @@ try:
 except:
     enteredCorrect=False
 if enteredCorrect:
+    prefs=getPrefixes()
     words=getWords()
-    '''
     for x in range(4):
         for y in range(4):
             beginRecurse(x,y)
-    '''
-    beginRecurse(0,0) #total takes too long
     htmlStr += "<h3>Your board:<br></h3>"
     htmlStr += printBoard(board)
     htmlStr += "<h3>Your words:<br></h3>"
@@ -105,7 +118,7 @@ if enteredCorrect:
 else:
     htmlStr+="The board was not entered correctly, try again."
 
-htmlStr+='<br>Want to<a href="boggle.html">Solve another board?</a>'
+htmlStr+='<br>Want to <a href="boggle.html">Solve another board?</a>'
 htmlStr += "</body></html>"
 
 
