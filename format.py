@@ -29,14 +29,26 @@ def formatWords():
     out.close()
 
 def prefix():
+    pref={}
     form = open('formattedWords', 'r')
     largememe = form.read()
     form.close()
     dictio = eval(largememe)
+    
     for number in dictio:
         for letter in dictio[number]:
             for word in dictio[number][letter]:
-                pref[word] = word[:
+                if not letter in pref:
+                    pref[letter]={number:set()}
+                for i in range(2,number):
+                    if i in pref[letter]:
+                        pref[letter][i].add(word[:i])
+                    else:
+                        pref[letter][i]=set()
+    outpref = open('prefixes','w')
+    outpref.write(str(pref))
+    outpref.close()
+                   
         
 formatWords()
 prefix()
