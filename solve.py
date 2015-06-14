@@ -34,7 +34,19 @@ def printBoard(bord):
     html='<tt>'
     for row in bord:
         for lett in row:
-            html+= lett + ' '
+            s=lett.find('>')
+            if s == -1:
+                if len(lett)==2:
+                    html+= lett
+                else:
+                    html+= lett + ' '
+            else:
+                e=lett.find('<',s)
+                space=e-s-1 #if there are tags, this willfind the actual leng of letter
+                if space==2:
+                    html+= lett
+                else:
+                    html+= lett + ' '
         html+= '<br>'
     return html+'</tt>'
 
