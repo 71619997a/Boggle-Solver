@@ -38,8 +38,9 @@ def getstring(bord):
     for i in range(4):
         for j in range(4):
             letter = bord[i][j]
-            html += str(i + 1) + str(j + 1) + '=' + letter
-    return html
+            html += str(i + 1) + str(j + 1) + '=' + letter + '&'
+    return html[:-1]
+
 
 
 htmlStr = "<html><head><title> Random Boggle Board</title></head></html>\n"
