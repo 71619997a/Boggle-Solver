@@ -7,7 +7,7 @@ cgitb.enable()
 
 board=[]
 words={}
-found=[]
+found={}
 prefs={}
 #Converts cgi.FieldStorage() return value into a standard dictionary
 def FStoD():
@@ -31,12 +31,12 @@ def getBoard():
     board[:]=boar
 
 def printBoard(bord):
-    html=''
+    html='<tt>'
     for row in bord:
         for lett in row:
             html+= lett + ' '
         html+= '<br>'
-    return html
+    return html+'</tt>'
 
 #gets words from the formattedWords file
 #eval is bad but it makes the program much faster & skips preprocessing
@@ -85,17 +85,39 @@ def recurseThroughBoard(word,used,x,y): #word is the word so far, including (x,y
     for nextPos in getNeighborPositions(x,y):
         if not nextPos in used: #if we havent used this pos already
             newWord=word+board[nextPos[0]][nextPos[1]]
+            newUsed=used+[[nextPos[0],nextPos[1]]]
             #Check if it's a word
             if isWord(newWord) and not newWord in found:
-                found.append(newWord)
+                found[newWord]=newUsed
             #Check if prefix or word (which dont count as prefs)
             if isPrefix(newWord):
-                recurseThroughBoard(newWord, used+[[nextPos[0],nextPos[1]]],nextPos[0],nextPos[1])
+                recurseThroughBoard(newWord, newUsed,nextPos[0],nextPos[1])
         #oh god. New word is the word plus the letter on the board for next position.
         #New used is old used plus the set of coords.
         #New x and y are next pos x and y.
 
- 
+def showOnBoard(word):
+    pos=found[word]
+    showBoard=[]
+    #i tried copying the board with other methods, but they didnt work
+    #so i had to resort to this :(
+    for x in range(4):
+        showBoard.append([])
+        for y in range(4):
+            showBoard[x].append(board[x][y])
+    #first letter is green
+    showBoard[pos[0][0]][pos[0][1]]='<font style="background-color: green">' \
+                       +showBoard[pos[0][0]][pos[0][1]]+'</font>'
+    #last is red
+    showBoard[pos[-1][0]][pos[-1][1]]='<font style="background-color: red">' \
+                        +showBoard[pos[-1][0]][pos[-1][1]]+'</font>'
+    #the other ones are yellow
+    for i in pos[1:-1]:
+        showBoard[i[0]][i[1]]='<font style="background-color: yellow">' \
+                      +showBoard[i[0]][i[1]]+'</font>'
+    return showBoard
+
+    
 htmlStr = "<html><head><title> Boggle Solver Results </title></head></html>\n"
 htmlStr += "<body>"
 enteredCorrect=True
@@ -113,11 +135,12 @@ if enteredCorrect:
     htmlStr += printBoard(board)
     htmlStr += "<h3>Your words:<br></h3>"
     for i in found:
-        htmlStr+=i+'<br>'
+        htmlStr+=i+'<br>'+printBoard(showOnBoard(i))+'<br><br>'
+
 else:
     htmlStr+="The board was not entered correctly, try again."
 
-htmlStr+='<br>Want to <a href="boggle.html">Solve another board?</a>'
+htmlStr+='<br>Want to <a href="boggle.html">solve another board?</a>'
 htmlStr += "</body></html>"
 
 
