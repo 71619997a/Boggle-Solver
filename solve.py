@@ -117,6 +117,11 @@ def showOnBoard(word):
                       +showBoard[i[0]][i[1]]+'</font>'
     return showBoard
 
+def negLen(a):
+    return -len(a)
+
+def sortedWords():
+    return sorted(found,key=negLen)
     
 htmlStr = "<html><head><title> Boggle Solver Results </title></head></html>\n"
 htmlStr += "<body>"
@@ -134,7 +139,7 @@ if enteredCorrect:
     htmlStr += "<h3>Your board:<br></h3>"
     htmlStr += printBoard(board)
     htmlStr += "<h3>Your words:<br></h3>"
-    for i in found:
+    for i in sortedWords():
         htmlStr+=i+'<br>'+printBoard(showOnBoard(i))+'<br><br>'
 
 else:
